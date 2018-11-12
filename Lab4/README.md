@@ -1,2 +1,2 @@
-# assignment4
-Critters Part 1
+# Lab4/5
+Critters Part 1 & 2
