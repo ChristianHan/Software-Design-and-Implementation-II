@@ -1,7 +1,5 @@
 package assignment2;
 
-import sun.plugin2.message.GetAuthenticationReplyMessage;
-
 import java.util.Scanner;
 
 public class Game {
