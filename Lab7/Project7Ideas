@@ -1,0 +1,159 @@
+Ideas:
+    -Three different chat options
+        -Create/Join public chat room
+        -Create/Join private chat room (Requires encrypted password to enter) EXTRA CREDIT
+        -Private chat with user
+    -Option to login in anonymously and join public or private chat rooms
+    -User logins to server with their username and encrypt password EXTRA CREDIT
+        -Maybe associate private chat histories with user EXTRA CREDIT
+        -Associate chat room histories with server? EXTRA CREDIT
+        -Keeps track if user is online or not in list
+    -Friends list to make private chats quicker EXTRA CREDIT
+    -Password change GUI EXTRA CREDIT
+    -Color coding user messages in chat rooms EXTRA CREDIT (low priority)
+
+Implementing Ideas:
+    -Message Object
+        -Variables: Sender, text
+    -User object:
+        -Variables: Boolean anonymous, String Name(could be "Anonymous1"), List friendsList(if not anonymous), List directChats
+    -Public Chat room
+        -Administration allows for blacklisting 
+        -Requires a room name when created.
+        -Keep track and display available public rooms in GUI table so user can know the available rooms to change
+        -Open chat ui
+    -Private Chat room
+        -Requires a room name and password when created
+        -You have to search by username and enter a password. This could be  processed in a single new window
+        -Opens chat ui
+    -Direct Chat
+        -Requires you to search a username that exists on the server.
+        -Opens chat ui
+    -Histories:
+        -Create a history object
+            -Variables: Arraylist of message objects. Keeping track if it was a chat room (and keeping track of its name) or direct message
+            -When chat room/direct message is reopened, check if there is an existing chat history (matching room name or matching pair of people)
+
+-Moez Notes
+    -Socket Programming
+        -Make sure port is greater that 1024. I like using ports greater than 3788
+        -If you cannot connect to friends program, search "windows run java on 0.0.0.0"
+            -https://stackoverflow.com/questions/20778771/what-is-the-difference-between-0-0-0-0-127-0-0-1-and-localhost
+            -Use Christian's computer to host the server
+        -Dont hard code your ip address for the server
+     -Multicast through observer pattern
+        -class ClientConnections implements observer
+            String name;
+            void sendMessageTo(String message){
+                //Send to the message to the server
+            }
+
+            public void update (Observalbe i, Object args){
+                String message = (String) args
+            }
+        -Class MultiCaseGroup extends observable{
+            String name;
+            void dispatchedMessage(String message){
+                setChanged();
+            }
+        }
+     -Use logger instead System.out
+
+- 8/10 Stuff
+ -Changes that need to be made to the server
+    -I dont think the server itself needs to be observable. I think we need to create a room object that is observable and the server
+     manages all of the rooms
+    -Create a room object
+    -Add an array list of room objects
+    -Add an anonymous count to keep names unique
+
+ -Room Object
+    -Variables: String status (private, public, direct), Clients 1 & 2. String roomName, String password, List messages
+
+ -Client to server JSONObject Codes:
+    -"create"
+        -"publicRoom"
+            -<roomName>
+            -<client1>
+        -"privateRoom"
+            -<roomName>
+            -<password>
+            -<client1>
+        -"directChat"
+            -<client1>
+            -<client2>
+    -"join"
+        -"publicRoom"
+            -<roomName>
+            -<client>
+        -"privateRoom"
+            -<roomName>
+            -<password>
+            -<client>
+    -"send"
+        -"room"
+            -<roomName>
+            -<sender>
+            -<message>
+        -"directChat"
+            -<sender>
+            -<recipient>
+            -<message>
+    -"login"
+        -"anonStatus"
+            -"true"
+            -"false"
+                -<username>
+                -<password>
+    -"createUser"
+        -"success"
+        -"fail"
+    -"getRoomList"
+    -"roomDisconnect"
+        -"roomName"
+            -<roomName>
+        -"username"
+            -<username>
+
+-Server to client JSON Codes
+    First, set "observable" to "server"
+    -"login"
+        -"username"
+            -<username>
+        -"success"
+            -<username>
+            -<password>
+        -"fail"
+    -"create"
+        -"username"
+            -<username>
+        -"status"
+            -"success"
+            -"fail"
+    -"roomList"
+        -"size"
+            -<size>
+        -"list"
+            -<list>
+    -"roomCreated"
+        -"status"
+            -"success"
+            -"fail"
+        -"roomName"
+            -<roomName>
+    -"joined"
+        -"status
+            -"success"
+            -"fail"
+        -"roomname"
+            -<roomname>
+
+-Room to client JSON
+    First, set "observable" to "room"
+    -"message"
+        -"roomName"
+            -<roomName>
+        -"sender"
+            -<sender>
+        -"message"
+            -<message>
